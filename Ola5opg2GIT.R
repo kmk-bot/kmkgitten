@@ -149,7 +149,7 @@ conw <- dbConnect(MariaDB(),
             host = "13.61.25.42",
             port = 3306,
             user = "kristian_karlskov",
-            password = "Hotel!elafonisos99"
+            password = ""
            )
 
 
