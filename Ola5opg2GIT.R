@@ -6,7 +6,7 @@ library(dplyr)
 library(lubridate)
 
 # Initialize logging
-log_file <- "/tmp/Airmeas"
+log_file <- "/temp/Airmeas"
 log_open <- function() {
   cat(paste(Sys.time(), "Log started\n"), file = log_file, append = TRUE)
 }
@@ -141,25 +141,22 @@ Anholt_data <- Anholt_data %>%
 risoe_data <- risoe_data %>%
   mutate(`Målt (starttid)` = dmy_hm(`Målt (starttid)`))
 
-# Database connection settings
-db_host <- "13.61.25.42"
-db_user <- "kristian_karlskov"
-db_password <- "Hotel!elafonisos99"
-db_name <- "AWS_air"
 
-# Function to connect to MySQL
-connect_to_db <- function() {
-  dbConnect(RMariaDB::MariaDB(),
-            host = db_host,
-            user = db_user,
-            password = db_password,
-            dbname = db_name)
-}
 
-#dbWriteTable(conw,"Hcab",Hcab_data, append = F)
-#dbWriteTable(conw,"Anholt",Anholt_data, append = F)
-#dbWriteTable(conw,"AArhus",aarhus_data, append = F)
-#dbWriteTable(conw,"Risoe",risoe_data, append = F)
+#connect to SQL
+conw <- dbConnect(MariaDB(),
+            dbname = "AWS_air",
+            host = "13.61.25.42",
+            port = 3306,
+            user = "kristian_karlskov",
+            password = "Hotel!elafonisos99"
+           )
+
+
+dbWriteTable(conw,"Hcab",Hcab_data, append = F)
+dbWriteTable(conw,"Anholt",Anholt_data, append = F)
+dbWriteTable(conw,"AArhus",aarhus_data, append = F)
+dbWriteTable(conw,"Risoe",risoe_data, append = F)
 
 log_print("Hente databaser fra SQL")
 
